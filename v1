@@ -1,4 +1,4 @@
-// Assignment 1 Mandelbrot
+// Assignment 1 Mandelbrot              test test
 //
 // Completed by
 //  Jovita Yip (z5161402)
@@ -112,3 +112,5 @@ double power(int base, int exponent) {
 
     return result;
 }
+
+
