@@ -1,0 +1,134 @@
+// Assignment 1 Mandelbrot
+//
+// Completed by
+//  Jovita Yip (z5161402)
+//  Jirayu Sirivorawong (z5125805)
+//
+// Modified on 2017-09-5
+// Helena Kertz (tuesday4-lab)
+
+// Add your own #includes here
+
+#include "mandelbrot.h"
+#include "pixelColor.h"
+
+// Add your own #defines here
+#define ESCAPE_LENGTH 4
+
+// Add your own function prototypes here
+static double lengthCal (complex c);
+
+double power(int base, int exponent);
+double mapToReal(int x, int TILE_SIZE, double minReal, double maxReal);
+double mapToImaginary(int y, int TILE_SIZE, double minImaginary, double maxImaginary);
+double complex c; 
+
+// Draw a single Mandelbrot tile, by calculating and colouring each of
+// the pixels in the tile.
+//
+// Your function "returns" this tile by filling in the `pixels` 2D array
+// that is passed in to your function.
+//
+// The `pixels` array is TILE_SIZE high and TILE_SIZE wide.
+// The bottom left corner of the image is pixels[0][0].
+//
+// `center` is a complex number, representing the center of the tile.
+// `z` is used to calculate the distance between each pixel in the image.
+// Each pixel is 2^(-z) apart from each other.
+void drawMandelbrot(pixel pixels[TILE_SIZE][TILE_SIZE],
+        complex center, int z) {
+    // hint: use this array to store the result from escapeGrid.
+    int grid[TILE_SIZE][TILE_SIZE];
+    
+    
+    
+    
+
+}
+
+// Determine the number of steps required to escape the Mandelbrot set,
+// for the given complex number `c`.
+int escapeSteps(complex c) {
+    
+    int steps = 0;
+    complex z = {0, 0};
+
+    //keep looping until length is more than escape length or it reaches the limit.
+    while (lengthCal (z) <= ESCAPE_LENGTH && steps < MAX_STEP) {
+        z = complexSum (complexSquare (z), c);
+        steps++;
+    }
+    
+    if (steps == MAX_STEPS) {
+        steps = NO_ESCAPE;
+    }
+    return steps;
+    
+    
+}
+
+
+// Fill a grid of TILE_SIZE by TILE_SIZE pixels, with the number of
+// steps each pixel took to escape the Mandelbrot set.
+void escapeGrid(int grid[TILE_SIZE][TILE_SIZE], complex center, int z) {
+
+//Calculate pixel length which is 2^(-z)    
+    double pixelLength = 1/power(2,z); 
+
+//Define coordinates for a given pixel   
+    double pixelx, pixely;
+        
+    int y = 0; 
+    while (y<TILE_SIZE) {
+        int x = 0;
+        while (x<TILE_SIZE) {
+            
+            //Find centre of the image 
+            pixelx = c.re - (TILE_SIZE/2)*pixelLength;
+            pixely = c.im - (TILE_SIZE/2)*pixelLength;
+            
+            //Find pixel coordinate that goes from the centre of the pixel
+            pixelx += x*pixelLength;
+            pixely += y*pixelLength;
+            
+           x++;
+       }
+       y++;
+   }  
+   
+
+}
+
+// Add your own functions here.
+
+//Function to caluclate integers to the power
+
+double power(int base, int exponent) {
+
+    int i = 0;
+    double result = 1;
+    while (i < exponent) {
+        result *= base;
+        i++;
+    }
+
+    return result;
+}
+
+static double lengthCal (complex c) {
+    return c.re * c.re + c.im * c.im;
+}
+
+//this function calculate the product of 2 complex numbers
+static complex complexMultiply(complex a, complex b) {
+    complex product = {
+        .real = a.real * b.real - a.imaginary * b.imaginary,
+        .imaginary = a.imaginary * b.real + b.imaginary * a.real
+    };
+    return product;
+}
+
+// this function returns the square of a complex number
+static complex complexSquare(complex c) {
+    return complexMultiply(c, c);
+}
