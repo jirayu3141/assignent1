@@ -13,8 +13,10 @@
 #include "pixelColor.h"
 
 // Add your own #defines here
+#define ESCAPE_LENGTH 4
 
 // Add your own function prototypes here
+static double lengthCal (complex c);
 
 double power(int base, int exponent);
 double mapToReal(int x, int TILE_SIZE, double minReal, double maxReal);
@@ -49,22 +51,22 @@ void drawMandelbrot(pixel pixels[TILE_SIZE][TILE_SIZE],
 int escapeSteps(complex c) {
     
     int steps = 0;
-    double real = 0.0;
-    double imaginary = 0.0;
+    complex z = {0, 0};
+
+    //keep looping until length is more than escape length or it reaches the limit.
+    while (lengthCal (z) <= ESCAPE_LENGTH && steps < MAX_STEP) {
+        z = complexSum (complexSquare (z), c);
+        steps++;
+    }
     
-    if ((real*real)+(imaginary*imaginary)<4) {
-        while (steps<MAX_STEPS) {
-            double temp = (real*real) - (imaginary*imaginary) + c.re;
-            imaginary = 2*real*imaginary + c.im;
-            real = temp;
-            steps++;
-        } 
-    } else {
+    if (steps == MAX_STEPS) {
         steps = NO_ESCAPE;
-    }    
-    
+    }
     return steps;
+    
+    
 }
+
 
 // Fill a grid of TILE_SIZE by TILE_SIZE pixels, with the number of
 // steps each pixel took to escape the Mandelbrot set.
@@ -111,4 +113,22 @@ double power(int base, int exponent) {
     }
 
     return result;
+}
+
+static double lengthCal (complex c) {
+    return c.re * c.re + c.im * c.im;
+}
+
+//this function calculate the product of 2 complex numbers
+static complex complexMultiply(complex a, complex b) {
+    complex product = {
+        .real = a.real * b.real - a.imaginary * b.imaginary,
+        .imaginary = a.imaginary * b.real + b.imaginary * a.real
+    };
+    return product;
+}
+
+// this function returns the square of a complex number
+static complex complexSquare(complex c) {
+    return complexMultiply(c, c);
 }
